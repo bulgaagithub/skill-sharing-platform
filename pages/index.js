@@ -1,65 +1,57 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { Row, Col, Button } from "react-bootstrap";
+// import GridItem from "components/grid-item";
+// import { getPaginatedPosts } from "lib/api";
+import Layout from "components/layout";
+import Intro from "components/intro";
+import Search from "components/search";
 
+// import { usePosts } from "hooks/use-posts";
+import { useSWRInfinite } from "swr";
+
+const PAGE_LIMIT = 3;
 export default function Home() {
+  // const { data, isLoading, error } = usePosts(posts);
+//   const { data, isValidating, size, setSize } = useSWRInfinite(
+//     (index) => `/api/posts/?page=${index}&limit=${PAGE_LIMIT}`,
+//     {
+//       initialData: [posts],
+//     }
+//   );
+
+  // if (error) return <div>failed to load</div>;
+  // if (isLoading) return <div>loading...</div>;
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Layout>
+      <Row>
+        <Col md="8">
+          <Intro />
+        </Col>
+      </Row>
+      <Row>
+        <Col md="4">
+          <Search />
+        </Col>
+      </Row>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      <hr />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+      {/* <Row className="mb-5">
+        {data.map((page) =>
+          page.map((post) => (
+            <Col md={12 / PAGE_LIMIT} key={post.title}>
+              <GridItem post={post} />
+            </Col>
+          ))
+        )}
+      </Row> */}
+      {/* <div style={{ textAlign: "center" }}>
+        {data[data.length - 1].length !== 0 &&
+          (isValidating ? (
+            <div>Түр хүлээнэ үү...</div>
+          ) : (
+            <Button onClick={() => setSize(size + 1)}>Цааш нь</Button>
+          ))}
+      </div> */}
+    </Layout>
+  );
 }
