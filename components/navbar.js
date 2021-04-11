@@ -30,15 +30,15 @@ const MyNavbar = () => {
                 Articles
                 </a>
             </Link>
-            <Link href="/about">
+            <Link href="/dashboard">
                 <a
                 className="fj-navbar-item fj-navbar-link"
                 style={{ marginTop: 5 }}
                 >
-                About Us
+                Мэдлэгээ хуваалцах
                 </a>
             </Link>
-            <label style={{ paddingTop: 4 }}>
+            {/* <label style={{ paddingTop: 4 }}>
                 <Toggle
                 onChange={toggleTheme}
                 icons={{
@@ -54,7 +54,7 @@ const MyNavbar = () => {
                     ),
                 }}
                 />
-            </label>
+            </label> */}
         </Nav>
       </Navbar.Collapse>
     </Navbar>

@@ -24,11 +24,14 @@ body {
   padding-top: 20px;
 }
 
-.card.fj-card {
+.fj-card {
+    margin-bottom: 20px;
+}
+
+.fj-card {
   .card-body-wrapper {
     background-color: #fff;
     box-shadow: 2px 5px 25px rgba(0, 0, 0, 0.15);
-    min-height: 280px;
     position: relative;
     z-index: 2;
     padding: 20px;

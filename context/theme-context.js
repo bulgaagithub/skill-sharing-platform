@@ -16,7 +16,7 @@ export const themes = {
 };
 
 export const ThemeProvider = (props) => {
-  const [theme, setTheme] = useState(themes.dark);
+  const [theme, setTheme] = useState(themes.light);
 
   const toggleTheme = () => {
     setTheme(theme === themes.light ? themes.dark : themes.light);

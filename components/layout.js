@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
         </div>
         <footer className="page-footer">
           <div>
-            @Copyright 2021
+           
           </div>
         </footer>
       </Container>

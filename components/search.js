@@ -2,7 +2,6 @@ import { InputGroup, FormControl } from "react-bootstrap";
 import { useTheme } from "hooks/use-theme";
 const Search = () => {
   const { theme, toggleTheme } = useTheme();
-  console.log(theme.background);
     return (
         <InputGroup className='mb-2'>
             <FormControl

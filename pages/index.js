@@ -7,19 +7,18 @@ import Search from "components/search";
 
 // import { usePosts } from "hooks/use-posts";
 import { useSWRInfinite } from "swr";
+import { getAllArticles } from "lib/api";
+import GridItem from "components/grid-item";
 
-const PAGE_LIMIT = 3;
-export default function Home() {
-  // const { data, isLoading, error } = usePosts(posts);
-//   const { data, isValidating, size, setSize } = useSWRInfinite(
-//     (index) => `/api/posts/?page=${index}&limit=${PAGE_LIMIT}`,
-//     {
-//       initialData: [posts],
-//     }
-//   );
+const PAGE_LIMIT = 2;
+export default function Home({ articles }) {
+  const { data, isValidating, size, setSize } = useSWRInfinite(
+    (index) => `/api/articles?page=${index}&limit=${PAGE_LIMIT}`,
+    {
+      initialData: [articles],
+    }
+  );
 
-  // if (error) return <div>failed to load</div>;
-  // if (isLoading) return <div>loading...</div>;
   return (
     <Layout>
       <Row>
@@ -32,26 +31,39 @@ export default function Home() {
           <Search />
         </Col>
       </Row>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       <hr />
 
-      {/* <Row className="mb-5">
-        {data.map((page) =>
-          page.map((post) => (
-            <Col md={12 / PAGE_LIMIT} key={post.title}>
-              <GridItem post={post} />
-            </Col>
-          ))
-        )}
-      </Row> */}
-      {/* <div style={{ textAlign: "center" }}>
+      <Row className="mb-5">
+        {data &&
+          data.map(
+            (page) =>
+              page &&
+              page.map((article, i) => (
+                <Col md={12} key={article.title}>
+                  <GridItem article={article} />
+                </Col>
+              ))
+          )}
+      </Row>
+
+      <div style={{ textAlign: "center" }}>
         {data[data.length - 1].length !== 0 &&
           (isValidating ? (
             <div>Түр хүлээнэ үү...</div>
           ) : (
             <Button onClick={() => setSize(size + 1)}>Цааш нь</Button>
           ))}
-      </div> */}
+      </div>
     </Layout>
   );
 }
+
+export const getStaticProps = async () => {
+  const articles = await getAllArticles(0, PAGE_LIMIT);
+  return {
+    props: {
+      articles: articles ? articles : [],
+    },
+    revalidate: 10,
+  };
+};
