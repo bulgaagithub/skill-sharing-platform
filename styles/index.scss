@@ -324,3 +324,40 @@ body {
     color: #63696e;
   }
 }
+
+
+.like, .like-comment {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.like span {
+    margin: 0px 15px 0px 5px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.wrapper {
+  display: block;
+  margin: 50px auto;
+}
+.comment-title {
+  border-bottom: 2px solid #007bff;
+  margin: 10px 0px;
+}
+.comment-title h2 {
+  font-weight: 700;
+}
+.comment-list p {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.comment-list .name {
+  font-size: 1rem;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.45);
+}
+.comment-list .date {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgb(205, 205, 205);
+}

@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import ReactHtmlParser from "react-html-parser";
 import Comment from "components/comment";
 import Like from "components/like";
+import { GlobalProvider } from "context/global-context";
 
 const ArticleDetail = ({ article }) => {
   moment.locale("mn");
@@ -29,18 +30,20 @@ const ArticleDetail = ({ article }) => {
   }
 
   return (
-    <Layout>
-      <Row>
-        <Col md="12">
-          <PostHeader post={article} />
-          <br />
-          <div>{ReactHtmlParser(article.content)}</div>
-        </Col>
-      </Row>
+    <GlobalProvider>
+      <Layout>
+        <Row>
+          <Col md="12">
+            <PostHeader post={article} />
+            <br />
+            <div>{ReactHtmlParser(article.content)}</div>
+          </Col>
+        </Row>
 
-      <Like article={article} />
-      <Comment article={article} />
-    </Layout>
+        <Like article={article} />
+        <Comment article={article} />
+      </Layout>
+    </GlobalProvider>
   );
 };
 

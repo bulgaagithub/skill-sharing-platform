@@ -10,7 +10,7 @@ import { useSWRInfinite } from "swr";
 import { getAllArticles } from "lib/api";
 import GridItem from "components/grid-item";
 
-const PAGE_LIMIT = 2;
+const PAGE_LIMIT = 4;
 export default function Home({ articles }) {
   const { data, isValidating, size, setSize } = useSWRInfinite(
     (index) => `/api/articles?page=${index}&limit=${PAGE_LIMIT}`,
