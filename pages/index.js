@@ -1,18 +1,14 @@
 import { Row, Col, Button } from "react-bootstrap";
-// import GridItem from "components/grid-item";
-// import { getPaginatedPosts } from "lib/api";
 import Layout from "components/layout";
 import Intro from "components/intro";
 import Search from "components/search";
 
-// import { usePosts } from "hooks/use-posts";
 import { useSWRInfinite } from "swr";
 import { getAllArticles } from "lib/api";
 import GridItem from "components/grid-item";
 
 const PAGE_LIMIT = 4;
 export default function Home({ articles }) {
-  const status = ['published', 'draft']
   const { data, isValidating, size, setSize } = useSWRInfinite(
     (index) => `/api/articles?status=status=approved&page=${index}&limit=${PAGE_LIMIT}`,
     {
