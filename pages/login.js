@@ -8,9 +8,11 @@ const Login = ({ csrfToken }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
   const [session] = useSession();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (errorMsg) setErrorMsg("");
     const login = await signIn("credentials", {
       email: e.currentTarget.email.value,
@@ -20,7 +22,11 @@ const Login = ({ csrfToken }) => {
     });
 
     if (login?.status === 200) {
+      setLoading(false);
       router.push("/dashboard");
+    } else {
+      setLoading(false);
+      setErrorMsg("Имэйл болон нууц үгээ зөв оруулна уу.");
     }
   };
 
@@ -40,6 +46,7 @@ const Login = ({ csrfToken }) => {
             onSubmit={handleSubmit}
             action="/api/auth/callback/credentials"
             csrfToken={csrfToken}
+            loading={loading}
           />
         )}
       </div>

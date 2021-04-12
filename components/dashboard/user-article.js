@@ -5,14 +5,15 @@ import { useSession } from "next-auth/client";
 import { useTheme } from "hooks/use-theme";
 import useSWR from "swr";
 import DataTable from "./data-table";
+import { useToasts } from "react-toast-notifications";
 
 import { API_URL } from "utils/axios";
 
-const PAGE_LIMIT = 4;
+const PAGE_LIMIT = 10;
 export default function Current() {
-  const { theme, toggleTheme } = useTheme();
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const [pageIndex, setPageIndex] = useState(1);
+  const { addToast } = useToasts();
 
   const fetcher = async (url) => {
     const res = await fetch(url, {
@@ -26,6 +27,7 @@ export default function Current() {
       const error = new Error("An error occurred while fetching the data.");
       error.info = await res.json();
       error.status = res.status;
+      addToast(error.info, { appearance: "error" });
       throw error;
     }
 
@@ -33,7 +35,7 @@ export default function Current() {
   };
 
   const { data, isValidating } = useSWR(
-    `${API_URL}/api/v1/articles/user/?page=${pageIndex}&limit=${PAGE_LIMIT}`,
+    `${API_URL}/api/v1/articles/user?page=${pageIndex}&limit=${PAGE_LIMIT}`,
     fetcher
   );
 
@@ -53,12 +55,12 @@ export default function Current() {
       );
     }
   }
-  
+
   return isValidating ? (
     <div>Loading</div>
   ) : !data?.data?.length === 0 ? (
     <div>No data</div>
   ) : (
-      <DataTable data={data?.articles} />
+    <DataTable data={data?.articles} />
   );
 }

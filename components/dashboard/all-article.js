@@ -14,11 +14,6 @@ export default function All({ categories }) {
     `/api/articles?page=${pageIndex}&limit=${PAGE_LIMIT}`
   );
 
-  const handleArticles = async () => {
-    const articles = await getAllArticles(0, LIMIT);
-    return res.json();
-  };
-
   const handleReview = (article) => {
     setReview(article);
   };

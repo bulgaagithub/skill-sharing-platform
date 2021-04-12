@@ -1,8 +1,16 @@
-import Link from 'next/link'
+import Link from "next/link";
+import { Spinner } from "react-bootstrap";
 
-const Form = ({ isLogin, errorMessage, onSubmit, action, csrfToken }) => (
+const Form = ({
+  isLogin,
+  errorMessage,
+  onSubmit,
+  action,
+  csrfToken,
+  loading,
+}) => (
   <form onSubmit={onSubmit} action={action}>
-    <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
+    <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
     {!isLogin && (
       <label>
         <span>Нэр</span>
@@ -27,17 +35,35 @@ const Form = ({ isLogin, errorMessage, onSubmit, action, csrfToken }) => (
     <div className="submit">
       {isLogin ? (
         <>
-          <Link href="/signup">
+          <Link href="/signup" disabled={loading ? true : false}>
             <a>Бүртгүүлэх</a>
           </Link>
-          <button type="submit">Нэвтрэх</button>
+          <button type="submit" disabled={loading ? true : false}>
+            {loading && (
+              <Spinner
+                animation="border"
+                size="sm"
+                style={{ marginRight: "10px" }}
+              />
+            )}
+            Нэвтрэх
+          </button>
         </>
       ) : (
         <>
-          <Link href="/login">
+          <Link href="/login" disabled={loading ? true : false}>
             <a>Нэвтрэх</a>
           </Link>
-          <button type="submit">Бүртгүүлэх</button>
+          <button type="submit" disabled={loading ? true : false}>
+            {loading && (
+              <Spinner
+                animation="border"
+                size="sm"
+                style={{ marginRight: "10px" }}
+              />
+            )}
+            Бүртгүүлэх
+          </button>
         </>
       )}
     </div>
@@ -61,6 +87,6 @@ const Form = ({ isLogin, errorMessage, onSubmit, action, csrfToken }) => (
       }
     `}</style>
   </form>
-)
+);
 
-export default Form
+export default Form;

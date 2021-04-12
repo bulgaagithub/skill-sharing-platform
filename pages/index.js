@@ -7,7 +7,7 @@ import { useSWRInfinite } from "swr";
 import { getAllArticles } from "lib/api";
 import GridItem from "components/grid-item";
 
-const PAGE_LIMIT = 4;
+const PAGE_LIMIT = 1;
 export default function Home({ articles }) {
   const { data, isValidating, size, setSize } = useSWRInfinite(
     (index) => `/api/articles?status=status=approved&page=${index}&limit=${PAGE_LIMIT}`,
@@ -31,6 +31,7 @@ export default function Home({ articles }) {
       <hr />
 
       <Row className="mb-5">
+          {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         {data &&
           data.map(
             (page) =>
@@ -56,7 +57,7 @@ export default function Home({ articles }) {
 }
 
 export const getStaticProps = async () => {
-  const articles = await getAllArticles(0, PAGE_LIMIT,'status=approved');
+  const articles = await getAllArticles(0, PAGE_LIMIT, 'status=approved');
   return {
     props: {
       articles: articles ? articles : [],

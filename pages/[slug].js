@@ -58,7 +58,7 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const articles = await getAllArticles(0, 4);
+  const articles = await getAllArticles(0, 4, 'status=approved');
   return {
     paths: articles.map((article) => ({
       params: {
