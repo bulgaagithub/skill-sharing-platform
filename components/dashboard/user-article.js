@@ -42,7 +42,7 @@ export default function Current() {
   };
 
   const { data, isValidating } = useSWR(
-    `${API_URL}/api/v1/articles/user?page=${pageIndex}&limit=${PAGE_LIMIT}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/user?page=${pageIndex}&limit=${PAGE_LIMIT}`,
     fetcher
   );
 

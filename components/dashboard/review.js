@@ -28,7 +28,7 @@ export default function Review({ article, categories, handleReview }) {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:9000/api/v1/articles/update", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/update`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

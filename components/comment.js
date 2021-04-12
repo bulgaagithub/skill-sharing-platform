@@ -38,7 +38,7 @@ export default function Comment({ article }) {
         setArticle(temp);
         setLoading(false);
 
-        const res = await fetch("http://localhost:9000/api/v1/comments", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/comments`, {
           method: "POST",
           headers: { "Content-Type": "application/json",  'Authorization': `Bearer ${session?.accessToken}` },
           body: JSON.stringify(newComment),

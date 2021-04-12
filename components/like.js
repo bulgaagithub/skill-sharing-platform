@@ -24,7 +24,7 @@ export default function Like({ article }) {
           type: "like",
         };
         await fetch(
-          "http://localhost:9000/api/v1/likes/like-dislike",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes/like-dislike`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
