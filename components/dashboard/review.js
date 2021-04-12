@@ -22,7 +22,7 @@ export default function Review({ article, categories, handleReview }) {
       category: e.currentTarget.category.value,
       status: e.currentTarget.status.value,
       articleId: article._id,
-      publishedAt: Date.now(),
+      approvedAt: Date.now(),
     };
 
     setLoading(true);
