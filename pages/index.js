@@ -31,7 +31,7 @@ export default function Home({ articles }) {
       <hr />
 
       <Row className="mb-5">
-          <pre>{JSON.stringify(data, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         {data &&
           data.map(
             (page) =>

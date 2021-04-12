@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCommentDots, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { RiWechat2Fill } from "@react-icons/all-files/ri/RiWechat2Fill";
+import { RiThumbUpFill } from "@react-icons/all-files/ri/RiThumbUpFill";
 import Button from "react-bootstrap/Button";
 import { useSession } from "next-auth/client";
 import { useGlobal } from "hooks/use-global";
@@ -58,11 +58,11 @@ export default function Comment({ article }) {
     <div className="wrapper">
       <div className="like-comment">
         <div className="like">
-          <FontAwesomeIcon icon={faCommentDots} />{" "}
+          <RiWechat2Fill />{" "}
           <span> {article?.comments?.length}</span>
         </div>
         <div className="like">
-          <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#007bff" }} />{" "}
+          <RiThumbUpFill />{" "}
           <span> {article?.likes}</span>
         </div>
       </div>

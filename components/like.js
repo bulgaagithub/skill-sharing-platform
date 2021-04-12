@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { RiThumbUpLine } from "@react-icons/all-files/ri/RiThumbUpLine";
 import { Spinner } from "react-bootstrap";
 import { useGlobal } from "hooks/use-global";
 
@@ -46,7 +45,7 @@ export default function Like({ article }) {
       {/* {temparticle != null && <pre>{JSON.stringify(temparticle, null, 2)}</pre>}  */}
       <Button className="mt-4" variant="outline-secondary" onClick={handleLike} disabled={isLike ? true : false}>
         {loading && <Spinner animation="border" size="sm" />}
-        <FontAwesomeIcon icon={faThumbsUp} /> Like
+        <RiThumbUpLine /> Like
       </Button>
     </div>
   );

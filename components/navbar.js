@@ -2,9 +2,9 @@ import { Navbar, Nav } from "react-bootstrap";
 import { useTheme } from "hooks/use-theme";
 import Link from "next/link";
 import Toggle from "react-toggle";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
-import { faSun } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faMoon } from "@fortawesome/free-solid-svg-icons";
+// import { faSun } from "@fortawesome/free-solid-svg-icons";
 const MyNavbar = () => {
   const { theme, toggleTheme } = useTheme();
   return (

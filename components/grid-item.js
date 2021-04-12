@@ -10,7 +10,7 @@ const GridItem = ({ article }) => {
       <div className="card-body-wrapper">
         <div className="d-flex flex-row">
           <div>
-            <Link href={article.slug}>
+            <Link href={`/${article.slug}`}>
               <a>
                 <Card.Title className="font-weight-bold mb-1">
                   {article.title}
