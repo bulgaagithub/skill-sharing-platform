@@ -25,7 +25,7 @@ body {
 }
 
 .fj-card {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .fj-card {
@@ -325,16 +325,18 @@ body {
   }
 }
 
+// like & comment
 
-.like, .like-comment {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+.like,
+.like-comment {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 .like span {
-    margin: 0px 15px 0px 5px;
-    font-size: 1rem;
-    font-weight: 700;
+  margin: 0px 15px 0px 5px;
+  font-size: 1rem;
+  font-weight: 700;
 }
 .wrapper {
   display: block;
@@ -360,4 +362,36 @@ body {
   font-size: 1rem;
   font-weight: 700;
   color: rgb(205, 205, 205);
+}
+
+// LOGIN & REGISTER FORM
+.login {
+  max-width: 21rem;
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.submit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+}
+.submit > a {
+  text-decoration: none;
+}
+.submit > button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.submit > button:hover {
+  border-color: #888;
+}
+.error {
+  color: brown;
+  margin: 1rem 0 0;
 }

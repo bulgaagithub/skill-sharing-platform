@@ -34,22 +34,28 @@ const options = {
     ],
     callbacks: {
         async signIn(user, account, profile) {
-          return true
+          if (user.success) {
+            return true
+          } else {
+            return false
+          }
         },
         async redirect(url, baseUrl) {
           return baseUrl
         },
         async session(session, user) {
             if (user) {
-                session.accessToken = user.accessToken
+                session.user = user.user.user;
+                session.accessToken = user.accessToken;
             }
-            return session
+            return Promise.resolve(session)
         },
         async jwt(token, user, account, profile, isNewUser) {
             if (user) {
-                token.accessToken = user.token
+                token.user = user;
+                token.accessToken = user.token;
             }
-            return token
+            return Promise.resolve(token) 
         }
     },
     secret: process.env.SECRET,
@@ -61,7 +67,6 @@ const options = {
     },
     pages: {
         signIn: '/login',
-        error: '/login'
     },
     database: process.env.DATABASE_URL
 }

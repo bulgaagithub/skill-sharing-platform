@@ -1,9 +1,13 @@
-import Editor from "components/editor";
-import { useGlobal } from "hooks/use-global";
+import MyEditor from "components/editor";
+import React from "react";
+import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import { useSession } from "next-auth/dist/client";
+import { useGlobal } from "hooks/use-global";
 import Router from "next/router";
 
-export default function Create({ categories }) {
+export default function Review({ article, categories, handleReview }) {
+
 
   const [session] = useSession();
   const { setLoading } = useGlobal();
@@ -16,12 +20,16 @@ export default function Create({ categories }) {
           summary: e.currentTarget.summary.value,
           content: editorValue,
           category: e.currentTarget.category.value,
+          status: e.currentTarget.status.value,
+          articleId: article._id,
+          publishedAt: Date.now()
         };
+
         setLoading(true);
     
         try {
-          const res = await fetch("http://localhost:9000/api/v1/articles", {
-            method: "POST",
+          const res = await fetch("http://localhost:9000/api/v1/articles/update", {
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${session?.accessToken}`,
@@ -41,5 +49,13 @@ export default function Create({ categories }) {
         }
     };
 
-  return <Editor categories={categories} handleSubmit={handleSubmit}/>;
+  return (
+    <div>
+      {/* {article && <pre>{JSON.stringify(article, null, 2)}</pre>} */}
+      <Alert variant="secondary" className="mt-2">
+        Нийтлэлийг засварлах хэсэг <Button onClick={() => handleReview(null)}>Хаах</Button>
+      </Alert>
+      <MyEditor data={ article } categories={categories} handleSubmit={handleSubmit}/>
+    </div>
+  );
 }

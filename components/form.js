@@ -5,21 +5,21 @@ const Form = ({ isLogin, errorMessage, onSubmit, action, csrfToken }) => (
     <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
     {!isLogin && (
       <label>
-        <span>Username</span>
+        <span>Нэр</span>
         <input type="text" name="username" required />
       </label>
     )}
     <label>
-      <span>Email</span>
+      <span>И-мэйл</span>
       <input type="email" name="email" required />
     </label>
     <label>
-      <span>Password</span>
+      <span>Нууц үг</span>
       <input type="password" name="password" required />
     </label>
     {!isLogin && (
       <label>
-        <span>Repeat password</span>
+        <span>Нууц үг давт</span>
         <input type="password" name="rpassword" required />
       </label>
     )}
@@ -28,16 +28,16 @@ const Form = ({ isLogin, errorMessage, onSubmit, action, csrfToken }) => (
       {isLogin ? (
         <>
           <Link href="/signup">
-            <a>I don't have an account</a>
+            <a>Бүртгүүлэх</a>
           </Link>
-          <button type="submit">Login</button>
+          <button type="submit">Нэвтрэх</button>
         </>
       ) : (
         <>
           <Link href="/login">
-            <a>I already have an account</a>
+            <a>Нэвтрэх</a>
           </Link>
-          <button type="submit">Signup</button>
+          <button type="submit">Бүртгүүлэх</button>
         </>
       )}
     </div>
@@ -58,29 +58,6 @@ const Form = ({ isLogin, errorMessage, onSubmit, action, csrfToken }) => (
         margin: 0.3rem 0 1rem;
         border: 1px solid #ccc;
         border-radius: 4px;
-      }
-      .submit {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .submit > a {
-        text-decoration: none;
-      }
-      .submit > button {
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      .submit > button:hover {
-        border-color: #888;
-      }
-      .error {
-        color: brown;
-        margin: 1rem 0 0;
       }
     `}</style>
   </form>

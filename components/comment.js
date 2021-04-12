@@ -23,7 +23,7 @@ export default function Comment({ article }) {
 
         let today = new Date();
         let name = null;
-        if (session) name = "Login User";
+        if (session) name = session?.user?.name;
         const newComment = {
           comment: e.currentTarget.comment.value,
           article: article._id,

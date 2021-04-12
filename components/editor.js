@@ -2,57 +2,31 @@ import React, { useRef, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Editor } from "@tinymce/tinymce-react";
 import { signIn, signOut, useSession } from "next-auth/client";
+import { useGlobal, userGlobal } from "hooks/use-global";
 import Router from "next/router";
-export default function MyEditor({ categories }) {
-  const [session, loading] = useSession();
+export default function MyEditor({ categories, data, handleSubmit }) {
 
-  const [editorValue, setValue] = useState(null);
-  const [load, setLoading] = useState(false);
-
+  const [session] = useSession();
+  const [editorValue, setValue] = useState(data ? data.content : null);
+  const { loading } = useGlobal();
   const editorRef = useRef();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const body = {
-      title: e.currentTarget.title.value,
-      summary: e.currentTarget.summary.value,
-      content: editorValue,
-      category: e.currentTarget.category.value,
-    };
-    setLoading(true);
-
-    try {
-      const res = await fetch("http://localhost:9000/api/v1/articles", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        body: JSON.stringify(body),
-      });
-      if (res.status === 200) {
-        setLoading(false);
-        Router.push("/dashboard");
-      } else {
-        setLoading(false);
-        throw new Error(await res.text());
-      }
-    } catch (error) {
-      console.error("An unexpected error happened occurred:", error);
-    }
-  };
 
   const handleEditorChange = (e) => {
     setValue(e.target.getContent());
   };
 
-  return load ? (
+  return loading ? (
     <div>loading...</div>
   ) : (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={(e) => handleSubmit(e, editorValue)}>
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Гарчиг</Form.Label>
-        <Form.Control type="text" placeholder="Enter title" name="title" />
+        <Form.Control
+          type="text"
+          placeholder="Enter title"
+          name="title"
+          defaultValue={data?.title}
+        />
       </Form.Group>
 
       <Form.Group controlId="formBasicPassword">
@@ -63,12 +37,13 @@ export default function MyEditor({ categories }) {
           name="summary"
           maxLength={250}
           placeholder="Enter summary"
+          defaultValue={data?.summary}
         />
       </Form.Group>
 
       <Editor
         ref={editorRef}
-        initialValue=""
+        initialValue={data?.content}
         apiKey="b92jxcyl79yhregu0pe6kjx9sgxrpokvrfnljk82mdabocl9"
         init={{
           height: 500,
@@ -102,9 +77,20 @@ export default function MyEditor({ categories }) {
         <Form.Group controlId="exampleForm.ControlSelect2">
           <Form.Label>Ангилал</Form.Label>
           <Form.Control as="select" name="category">
-            {categories.map((e) => 
-                <option key={e.id} value={e.id}>{e.name}</option>
-            )}
+            {categories.map((e) => (
+              <option key={e.id} value={e._id}>
+                {e.name}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
+      )}
+      {session?.user?.is_admin && (
+        <Form.Group controlId="exampleForm.ControlSelect3">
+          <Form.Label>Төлөв</Form.Label>
+          <Form.Control as="select" name="status">
+            <option value="approved" defaultChecked={data?.status === 'published' ? true : false}>Approve</option>
+            <option value="draft" defaultChecked={data?.status === 'draft' ? true : false}>Draft</option>
           </Form.Control>
         </Form.Group>
       )}
