@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }) {
           }}
         >
           <ToastProvider
-            autoDismissTimeout={1000}
+            autoDismissTimeout={2000}
             placement="top-center"
             autoDismiss
           >

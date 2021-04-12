@@ -31,7 +31,7 @@ export default function Create({ categories }) {
       });
       if (res.status === 200) {
         setLoading(false);
-        addToast('Хадгалагдлаа', { appearance: "success" });
+        addToast("Хадгалагдлаа.", { appearance: "success" });
         Router.push("/dashboard");
       } else {
         setLoading(false);
@@ -41,8 +41,10 @@ export default function Create({ categories }) {
     } catch (error) {
       setLoading(false);
       if (error.statusCode === 401) {
-        addToast(error.messge, { appearance: "error" });
-        signOut();
+        addToast(error.message, { appearance: "error" });
+        setTimeout(() => {
+          signOut();
+        }, 1000);
       }
       console.error("An unexpected error happened occurred:", error);
     }

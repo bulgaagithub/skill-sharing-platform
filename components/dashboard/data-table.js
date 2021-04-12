@@ -5,7 +5,6 @@ import { useSession } from "next-auth/client";
 import Button from "react-bootstrap/Button";
 
 export default function DataTable({ data, type, handleReview }) {
-    console.log(data)
   moment.locale("mn");
   const [session, loading] = useSession();
   return (

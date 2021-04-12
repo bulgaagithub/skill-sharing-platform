@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Pagination from "react-bootstrap/Pagination";
 
-import { useSession } from "next-auth/client";
+import { useSession, signOut } from "next-auth/client";
 import { useTheme } from "hooks/use-theme";
 import useSWR from "swr";
 import DataTable from "./data-table";
@@ -24,13 +24,20 @@ export default function Current() {
       },
     });
     if (!res.ok) {
-      const error = new Error("An error occurred while fetching the data.");
-      error.info = await res.json();
-      error.status = res.status;
-      addToast(error.info, { appearance: "error" });
-      throw error;
+      const result = await res.json();
+      console.log("user error:........", result.error.name);
+      //   const error = new Error("An error occurred while fetching the data.");
+      //   error.info = await res.json();
+      //   error.status = res.status;
+      //   const r = await res.json();
+      if (result.error.name === "TokenExpiredError") {
+        addToast("Нэвтрэх эрх дууссан байна.", { appearance: "error" });
+        setTimeout(()=> {
+            signOut();
+        }, 1000);
+      }
+      return false;
     }
-
     return res.json();
   };
 
@@ -61,6 +68,6 @@ export default function Current() {
   ) : !data?.data?.length === 0 ? (
     <div>No data</div>
   ) : (
-    <DataTable data={data?.articles} />
+    <DataTable data={data ? data?.articles : []} />
   );
 }

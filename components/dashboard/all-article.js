@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useSession } from "next-auth/client";
 import useSWR from "swr";
-import { getAllArticles } from "lib/api";
 import DataTable from "./data-table";
 import Review from "./review";
 

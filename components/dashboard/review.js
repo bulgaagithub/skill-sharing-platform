@@ -48,7 +48,9 @@ export default function Review({ article, categories, handleReview }) {
       setLoading(false);
       addToast(error.message, { appearance: "error" });
       if (error.statusCode === 401) {
-        signOut();
+        setTimeout(() => {
+          signOut();
+        }, 1000);
       }
       console.error("An unexpected error happened occurred:", error);
     }
