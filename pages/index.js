@@ -27,11 +27,11 @@ export default function Home({ articles }) {
           <Intro />
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col md="4">
           <Search />
         </Col>
-      </Row>
+      </Row> */}
       <hr />
 
       <Row className="mb-5">

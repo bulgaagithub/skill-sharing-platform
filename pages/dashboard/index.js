@@ -8,6 +8,8 @@ import Article from "components/dashboard/article";
 import Create from "components/dashboard/create";
 import { getAllCategories } from "lib/api";
 import { GlobalProvider } from "context/global-context";
+import Alert from "react-bootstrap/Alert";
+import Link from "next/link";
 
 export default function Dashboard({ categories }) {
   const [session, loading] = useSession();
@@ -17,13 +19,6 @@ export default function Dashboard({ categories }) {
   const activeChange = (active) => {
     setActive(active);
   };
-
-  useEffect(() => {
-    if (!session) {
-      console.log("......");
-      router.push("/login");
-    }
-  }, [session]);
 
   return (
     <GlobalProvider>
@@ -50,11 +45,13 @@ export default function Dashboard({ categories }) {
 
         {!session && (
           <>
-            Та нэвтэрнэ үү.
-            <br />
-            <Button variant="primary" onClick={() => signIn()}>
-              Нэвтрэх
-            </Button>
+            <Alert variant="info">
+              <Alert.Heading>Та нийтлэл оруулахын тулд сайтад бүртгүүлж нэвтрэх ёстой <br/> <Link href='/login'><a>Нэвтрэх</a></Link> дээр дарна уу.</Alert.Heading>
+              <hr />
+              {/* <Button variant="primary" onClick={() => signIn()}>
+                Нэвтрэх
+              </Button> */}
+            </Alert>
           </>
         )}
       </Layout>
