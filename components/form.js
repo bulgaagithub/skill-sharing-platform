@@ -3,6 +3,8 @@ import { Spinner } from "react-bootstrap";
 import { useFormik } from "formik";
 import { FormControl, FormLabel, Input, Text, Button } from "@chakra-ui/react";
 
+import { useGlobal } from "hooks/use-global";
+
 const validate = (values) => {
   const errors = {};
 
@@ -40,9 +42,9 @@ const Form = ({
   errorMessage,
   handleSubmit,
   action,
-  csrfToken,
-  loading,
+  csrfToken
 }) => {
+  const { loading } = useGlobal();
   const formik = useFormik({
     initialValues: {
       email: "",

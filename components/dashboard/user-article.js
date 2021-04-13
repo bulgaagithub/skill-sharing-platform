@@ -2,12 +2,9 @@ import { useState } from "react";
 import Pagination from "react-bootstrap/Pagination";
 
 import { useSession, signOut } from "next-auth/client";
-import { useTheme } from "hooks/use-theme";
 import useSWR from "swr";
 import DataTable from "./data-table";
 import { useToasts } from "react-toast-notifications";
-
-import { API_URL } from "utils/axios";
 
 const PAGE_LIMIT = 10;
 export default function Current() {

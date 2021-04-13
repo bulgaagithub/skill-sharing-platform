@@ -3,11 +3,12 @@ import Router from "next/router";
 import Layout from "components/layout";
 import Form from "components/form";
 import { useToasts } from "react-toast-notifications";
+import { useGlobal } from "hooks/use-global";
 
 const Signup = () => {
   const { addToast } = useToasts();
   const [errorMsg, setErrorMsg] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { setLoading } = useGlobal();
 
   async function handleSubmit(values) {
     if (errorMsg) setErrorMsg("");
@@ -55,7 +56,6 @@ const Signup = () => {
     <Layout>
       <div className="login">
         <Form
-          loading={loading}
           isLogin={false}
           errorMessage={errorMsg}
           handleSubmit={handleSubmit}

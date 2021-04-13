@@ -12,7 +12,6 @@ import Article from "components/dashboard/article";
 import Create from "components/dashboard/create";
 
 import { getAllCategories } from "lib/api";
-import { GlobalProvider } from "context/global-context";
 
 export default function Dashboard({ categories }) {
   const [session, loading] = useSession();
@@ -23,7 +22,6 @@ export default function Dashboard({ categories }) {
   };
 
   return (
-    <GlobalProvider>
       <Layout>
         {loading && <p>Loading</p>}
 
@@ -60,7 +58,6 @@ export default function Dashboard({ categories }) {
           </>
         )}
       </Layout>
-    </GlobalProvider>
   );
 }
 

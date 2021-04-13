@@ -4,11 +4,13 @@ import Layout from "components/layout";
 import Form from "components/form";
 import { getCsrfToken, signIn, useSession } from "next-auth/client";
 
+import { useGlobal } from "hooks/use-global";
+
 const Login = ({ csrfToken }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
   const [session] = useSession();
-  const [loading, setLoading] = useState(false);
+  const {loading, setLoading} = useGlobal();
 
   const handleSubmit = async (values) => {
     // e.preventDefault();
@@ -47,7 +49,6 @@ const Login = ({ csrfToken }) => {
             handleSubmit={handleSubmit}
             action="/api/auth/callback/credentials"
             csrfToken={csrfToken}
-            loading={loading}
           />
         )}
       </div>

@@ -13,14 +13,28 @@ export default function Review({ article, categories, handleReview }) {
   const { addToast } = useToasts();
 
   const handleSubmit = async (e, editorValue) => {
-    e.preventDefault();
+    // e.preventDefault();
+
+    if (!editorValue) {
+      addToast("Нийтлэлийн агуулга оруулна уу!", {
+        appearance: "error",
+        autoDismiss: 5000,
+      });
+      return;
+    } else if (editorValue.length < 100) {
+      addToast("Нийтлэлийн агуулга хамгийн багадаа 100 тэмдэгт", {
+        appearance: "error",
+        autoDismiss: 5000,
+      });
+      return;
+    }
 
     const body = {
-      title: e.currentTarget.title.value,
-      summary: e.currentTarget.summary.value,
+      title: e.title,
+      summary: e.value,
       content: editorValue,
-      category: e.currentTarget.category.value,
-      status: e.currentTarget.status.value,
+      category: e.category,
+      status: e.status,
       articleId: article._id,
       approvedAt: Date.now(),
     };
@@ -28,14 +42,17 @@ export default function Review({ article, categories, handleReview }) {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/update`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        body: JSON.stringify(body),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/update`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
       if (res.status === 200) {
         setLoading(false);
         addToast("Засагдлаа", { appearance: "success" });

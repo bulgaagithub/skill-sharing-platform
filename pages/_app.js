@@ -1,6 +1,7 @@
 import { ThemeProvider } from "context/theme-context";
 import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
 import { Provider } from "next-auth/client";
+import { GlobalProvider } from "context/global-context";
 import { ToastProvider } from "react-toast-notifications";
 import { SWRConfig } from "swr";
 import Nprogress from "nprogress";
@@ -39,35 +40,37 @@ Router.onRouteChangeError = (url) => {
 function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider>
-      <Provider session={pageProps.session}>
-        <ChakraProvider theme={theme} resetCSS>
-          <ColorModeProvider
-            options={{
-              useSystemColorMode: true,
+      <ChakraProvider theme={theme} resetCSS>
+        <ColorModeProvider
+          options={{
+            useSystemColorMode: true,
+          }}
+        >
+          <SWRConfig
+            value={{
+              refreshInterval: 60000,
+              fetcher,
+            //   onError: (error, key) => {
+            //     if (error.status !== 403 && error.status !== 404) {
+            //       // addToast(error.message, { appearance: "error" });
+            //     }
+            //   },
             }}
           >
-            <SWRConfig
-              value={{
-                refreshInterval: 60000,
-                fetcher,
-                onError: (error, key) => {
-                  if (error.status !== 403 && error.status !== 404) {
-                    // addToast(error.message, { appearance: "error" });
-                  }
-                },
-              }}
+            <ToastProvider
+              autoDismissTimeout={2000}
+              placement="top-center"
+              autoDismiss
             >
-              <ToastProvider
-                autoDismissTimeout={2000}
-                placement="top-center"
-                autoDismiss
-              >
-                <Component {...pageProps} />
-              </ToastProvider>
-            </SWRConfig>
-          </ColorModeProvider>
-        </ChakraProvider>
-      </Provider>
+              <Provider session={pageProps.session}>
+                <GlobalProvider>
+                  <Component {...pageProps} />
+                </GlobalProvider>
+              </Provider>
+            </ToastProvider>
+          </SWRConfig>
+        </ColorModeProvider>
+      </ChakraProvider>
     </ThemeProvider>
   );
 }
