@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start -p 4000"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.5.0",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@react-icons/all-files": "^4.1.0",
     "@tinymce/tinymce-react": "^3.12.2",
     "bootstrap": "^4.6.0",
+    "formik": "^2.2.6",
+    "framer-motion": "^4",
     "highlight.js": "^10.7.2",
     "http-proxy-middleware": "^1.1.1",
     "moment": "^2.29.1",

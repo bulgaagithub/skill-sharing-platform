@@ -5,9 +5,10 @@ import Form from "components/form";
 import { useToasts } from "react-toast-notifications";
 
 const Signup = () => {
-  //   useUser({ redirectTo: '/', redirectIfFound: true })
+  
   const { addToast } = useToasts();
   const [errorMsg, setErrorMsg] = useState("");
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -50,15 +51,6 @@ const Signup = () => {
       <div className="login">
         <Form isLogin={false} errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>
-      <style jsx>{`
-        .login {
-          max-width: 21rem;
-          margin: 0 auto;
-          padding: 1rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
-      `}</style>
     </Layout>
   );
 };

@@ -10,15 +10,16 @@ const Login = ({ csrfToken }) => {
   const [session] = useSession();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values) => {
+    // e.preventDefault();
     setLoading(true);
     if (errorMsg) setErrorMsg("");
     const login = await signIn("credentials", {
-      email: e.currentTarget.email.value,
-      password: e.currentTarget.password.value,
+      email: values.email,
+      password: values.password,
       redirect: false,
       url: `http://localhost:9000/dashboard`,
+      callBackUrl: `http://localhost:9000/dashboard`,
     });
 
     if (login?.status === 200) {
@@ -43,7 +44,7 @@ const Login = ({ csrfToken }) => {
           <Form
             isLogin
             errorMessage={errorMsg}
-            onSubmit={handleSubmit}
+            handleSubmit={handleSubmit}
             action="/api/auth/callback/credentials"
             csrfToken={csrfToken}
             loading={loading}
