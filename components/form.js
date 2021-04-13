@@ -205,7 +205,15 @@ const Form = ({
         )}
       </div>
 
-      {errorMessage && <p className="error">{errorMessage}</p>}
+      {errorMessage && (
+        <Text
+          fontSize="1.5rem"
+          bgGradient="linear(to-l, #7928CA,#FF0000)"
+          bgClip="text"
+        >
+          {errorMessage}
+        </Text>
+      )}
     </form>
   );
 };
