@@ -8,7 +8,6 @@ export const createUpdate = async (
   article,
   router
 ) => {
-
   let body = {};
 
   if (!editorValue) {
@@ -24,7 +23,7 @@ export const createUpdate = async (
     });
     return;
   }
-  
+
   if (type === "create") {
     body = {
       title: e.title,
@@ -32,19 +31,17 @@ export const createUpdate = async (
       content: editorValue,
       category: e.category,
     };
-  } else if (type === "update") {
+  } else if (type === "review") {
     body = {
       title: e.title,
       summary: e.value,
       content: editorValue,
       category: e.category,
-      status: e.status,
       articleId: article._id,
-      approvedAt: Date.now(),
     };
-  } else if(type === "delete") {
+  } else if (type === "delete") {
     body = {
-        articleId: article._id,
+      articleId: article._id,
     };
   }
 
@@ -65,7 +62,64 @@ export const createUpdate = async (
     );
     if (res.status === 200) {
       loadFn(false);
-      addToast(type === "delete" ? "Устгагдлаа" : "Хадгалагдлаа.", { appearance: "success" });
+      addToast(type === "delete" ? "Устгагдлаа" : "Хадгалагдлаа.", {
+        appearance: "success",
+      });
+      router.push("/dashboard");
+    } else {
+      loadFn(false);
+      const result = await res.json();
+      addToast(result.error.message + result.error.statusCode, {
+        appearance: "error",
+        autoDismiss: 6000,
+      });
+      return;
+    }
+  } catch (error) {
+    loadFn(false);
+    if (error.statusCode === 401) {
+      addToast(error.message, { appearance: "error" });
+      setTimeout(() => {
+        signOut();
+      }, 1000);
+    }
+  }
+};
+
+export const approveArticle = async (
+  session,
+  loadFn,
+  addToast,
+  article,
+  router
+) => {
+
+  const body = {
+    status: "approved",
+    articleId: article._id,
+    approvedAt: Date.now(),
+  };
+
+  loadFn(true);
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/${article._id}/approve`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    if (res.status === 200) {
+      loadFn(false);
+      addToast("Нийтлэгдлээ.", {
+        appearance: "success",
+      });
       router.push("/dashboard");
     } else {
       loadFn(false);

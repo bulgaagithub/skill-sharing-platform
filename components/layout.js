@@ -4,9 +4,7 @@ const Layout = ({ children }) => {
   return (
     <Container maxW="container.lg">
       <MyNavbar />
-      <Box>
-        {children}
-      </Box>
+      {children}
     </Container>
   );
 };

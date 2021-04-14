@@ -28,8 +28,6 @@ export default function Dashboard({ categories }) {
 
   return (
     <Layout>
-      {loading && <p>Loading</p>}
-
       {session && (
         <Grid
           templateRows="repeat(1, 2fr)"

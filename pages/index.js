@@ -1,7 +1,6 @@
-
 import { useSWRInfinite } from "swr";
 import { getAllArticles } from "lib/api";
-import { SimpleGrid, Box, Button } from "@chakra-ui/react";
+import { SimpleGrid, Box, Button, SkeletonText } from "@chakra-ui/react";
 
 import Layout from "components/layout";
 import Intro from "components/intro";
@@ -25,13 +24,8 @@ export default function Home({ articles }) {
           <Intro />
         </Box>
       </SimpleGrid>
-      {/* <Row>
-        <Col md="4">
-          <Search />
-        </Col>
-      </Row> */}
 
-      <SimpleGrid className="mb-5" columns={1}>
+      <SimpleGrid columns={1}>
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         {data &&
           data.map(
@@ -45,18 +39,29 @@ export default function Home({ articles }) {
           )}
       </SimpleGrid>
 
-      <Box display="flex" justifyContent="center" alignItems="center" className="mb-10">
-        {data[data.length - 1].length !== 0 && (
-          <Button
-            isLoading={isValidating}
-            loadingText="Түр хүлээнэ үү..."
-            colorScheme="blue"
-            onClick={() => setSize(size + 1)}
+      {data[data.length - 1].length !== 0 &&
+        (isValidating ? (
+          <Box padding="6" boxShadow="lg" bg="white">
+            <SkeletonText mt="4" noOfLines={4} spacing="4" />
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            h="50px"
+            mb={5}
           >
-            Цааш нь
-          </Button>
-        )}
-      </Box>
+            <Button
+              isLoading={isValidating}
+              loadingText="Түр хүлээнэ үү..."
+              colorScheme="blue"
+              onClick={() => setSize(size + 1)}
+            >
+              Цааш нь
+            </Button>
+          </Box>
+        ))}
     </Layout>
   );
 }

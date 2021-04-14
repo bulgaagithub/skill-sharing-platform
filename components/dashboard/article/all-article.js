@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useSession } from "next-auth/client";
 import useSWR from "swr";
+import { Box, SkeletonText } from "@chakra-ui/react";
 import DataTable from "components/dashboard/data-table";
 import Review from "components/dashboard/review";
 
@@ -13,11 +13,17 @@ export default function All({ categories, reviewArticle, handleReview }) {
   );
 
   return isValidating ? (
-    <div>Loading</div>
+    <Box padding="6" boxShadow="lg" bg="white" mt={2}>
+      <SkeletonText mt="4" noOfLines={4} spacing="4" />
+    </Box>
   ) : !data?.length === 0 ? (
-    <div>No data</div>
+    <div>Одоогоор нийтлэл ороогүй байна.</div>
   ) : reviewArticle ? (
-    <Review article={reviewArticle} categories = {categories} handleReview={handleReview}/>
+    <Review
+      article={reviewArticle}
+      categories={categories}
+      handleReview={handleReview}
+    />
   ) : (
     <DataTable data={data ? data : []} handleReview={handleReview} />
   );
