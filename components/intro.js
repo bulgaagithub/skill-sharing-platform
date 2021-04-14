@@ -1,10 +1,19 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Alert } from "@chakra-ui/react";
 const Intro = () => (
-  <Box className="mb-4" maxW="600px">
-    <Text fontSize="1.5rem">
-      Бид програмчлалын чиглэлээр төрөл бүрийн сонирхолтой мэдээллүүдийг энэхүү
-      блогоор хүргэж байна.
-    </Text>
-  </Box>
+  <Alert
+    status="success"
+    flexDirection="column"
+    alignItems="center"
+    justifyContent="center"
+    textAlign="center"
+    height="200px"
+    bg="green.600"
+  >
+    <Box maxWidth="sm">
+      <Text fontSize="1.5rem" fontWeight="bold" color="#fff">
+        Мэдээлэл технологийн сонирхолтой мэдээллүүд
+      </Text>
+    </Box>
+  </Alert>
 );
 export default Intro;

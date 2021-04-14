@@ -9,7 +9,7 @@ import Router from "next/router";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toggle/style.css";
-// import "../styles/index.scss";
+import "../styles/index.scss";
 import "nprogress/nprogress.css";
 import theme from "theme";
 

@@ -37,7 +37,7 @@ export default function MyEditor({ type, categories, data }) {
       title: data ? data.title : "",
       summary: data ? data.summary : "",
       category: data ? data.category._id : categories ? [0]._id : "",
-      status: data ? data.status : "draft",
+      status: data ? data.status : "pending",
     },
     validate,
     onSubmit: async (values) => {
