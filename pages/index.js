@@ -1,16 +1,18 @@
-import { Row, Col, Button } from "react-bootstrap";
-import Layout from "components/layout";
-import Intro from "components/intro";
-import Search from "components/search";
 
 import { useSWRInfinite } from "swr";
 import { getAllArticles } from "lib/api";
+import { SimpleGrid, Box, Button } from "@chakra-ui/react";
+
+import Layout from "components/layout";
+import Intro from "components/intro";
+// import Search from "components/search";
 import GridItem from "components/grid-item";
 
 const PAGE_LIMIT = 3;
 export default function Home({ articles }) {
   const { data, isValidating, size, setSize } = useSWRInfinite(
-    (index) => `/api/articles?status=status=approved&page=${index}&limit=${PAGE_LIMIT}`,
+    (index) =>
+      `/api/articles?status=status=approved&page=${index}&limit=${PAGE_LIMIT}`,
     {
       initialData: [articles],
     }
@@ -18,46 +20,49 @@ export default function Home({ articles }) {
 
   return (
     <Layout>
-      <Row>
-        <Col md="8">
+      <SimpleGrid columns={1}>
+        <Box className="mb-2">
           <Intro />
-        </Col>
-      </Row>
+        </Box>
+      </SimpleGrid>
       {/* <Row>
         <Col md="4">
           <Search />
         </Col>
       </Row> */}
-      <hr />
 
-      <Row className="mb-5">
-          {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      <SimpleGrid className="mb-5" columns={1}>
+        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         {data &&
           data.map(
             (page) =>
               page &&
               page.map((article, i) => (
-                <Col md={12} key={article.title}>
+                <Box md={12} key={article.title}>
                   <GridItem article={article} />
-                </Col>
+                </Box>
               ))
           )}
-      </Row>
+      </SimpleGrid>
 
-      <div style={{ textAlign: "center" }}>
-        {data[data.length - 1].length !== 0 &&
-          (isValidating ? (
-            <div>Түр хүлээнэ үү...</div>
-          ) : (
-            <Button onClick={() => setSize(size + 1)}>Цааш нь</Button>
-          ))}
-      </div>
+      <Box display="flex" justifyContent="center" alignItems="center" className="mb-10">
+        {data[data.length - 1].length !== 0 && (
+          <Button
+            isLoading={isValidating}
+            loadingText="Түр хүлээнэ үү..."
+            colorScheme="blue"
+            onClick={() => setSize(size + 1)}
+          >
+            Цааш нь
+          </Button>
+        )}
+      </Box>
     </Layout>
   );
 }
 
 export const getStaticProps = async () => {
-  const articles = await getAllArticles(0, PAGE_LIMIT, 'status=approved');
+  const articles = await getAllArticles(0, PAGE_LIMIT, "status=approved");
   return {
     props: {
       articles: articles ? articles : [],

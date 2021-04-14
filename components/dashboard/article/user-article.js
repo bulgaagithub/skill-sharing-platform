@@ -3,11 +3,12 @@ import Pagination from "react-bootstrap/Pagination";
 
 import { useSession, signOut } from "next-auth/client";
 import useSWR from "swr";
-import DataTable from "./data-table";
+import DataTable from "components/dashboard/data-table";
 import { useToasts } from "react-toast-notifications";
+import Review from "components/dashboard/review";
 
 const PAGE_LIMIT = 10;
-export default function Current() {
+export default function Current({ categories, reviewArticle, handleReview }) {
   const [session] = useSession();
   const [pageIndex, setPageIndex] = useState(1);
   const { addToast } = useToasts();
@@ -22,15 +23,10 @@ export default function Current() {
     });
     if (!res.ok) {
       const result = await res.json();
-      console.log("user error:........", result.error.name);
-      //   const error = new Error("An error occurred while fetching the data.");
-      //   error.info = await res.json();
-      //   error.status = res.status;
-      //   const r = await res.json();
       if (result.error.name === "TokenExpiredError") {
         addToast("Нэвтрэх эрх дууссан байна.", { appearance: "error" });
-        setTimeout(()=> {
-            signOut();
+        setTimeout(() => {
+          signOut();
         }, 1000);
       }
       return false;
@@ -64,7 +60,13 @@ export default function Current() {
     <div>Loading</div>
   ) : !data?.data?.length === 0 ? (
     <div>No data</div>
+  ) : reviewArticle ? (
+    <Review
+      article={reviewArticle}
+      categories={categories}
+      handleReview={handleReview}
+    />
   ) : (
-    <DataTable data={data ? data?.articles : []} />
+    <DataTable data={data ? data?.articles : []} handleReview={handleReview} />
   );
 }

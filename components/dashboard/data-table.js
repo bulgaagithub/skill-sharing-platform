@@ -17,7 +17,8 @@ export default function DataTable({ data, type, handleReview }) {
             <th>Төлөв</th>
             <th>Огноо</th>
             <th>Нийтлэгдсэн</th>
-            { session.user?.is_admin && <th>Actions</th> }
+            {/* { session.user?.is_admin && <th>Actions</th> } */}
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -28,7 +29,8 @@ export default function DataTable({ data, type, handleReview }) {
               <td>{article.status}</td>
               <td>{moment(article.createdAt).format("YYYY-MM-DD")}</td>
               <td>{moment(article.createdAt).format("YYYY-MM-DD")}</td>
-              { session.user?.is_admin && <td><Button variant="primary" onClick={()=> handleReview(article)}>Review</Button></td> }
+              {/* { session.user?.is_admin && <td><Button variant="primary" onClick={()=> handleReview(article)}>Review</Button></td> } */}
+              <td><Button variant="primary" onClick={()=> handleReview(article)}>Review</Button></td>
             </tr>
           ))}
         </tbody>

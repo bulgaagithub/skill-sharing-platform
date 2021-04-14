@@ -1,10 +1,8 @@
 import React from "react";
 import { ListGroup } from "react-bootstrap";
-import { useTheme } from "hooks/use-theme";
 import { signOut, useSession } from "next-auth/client";
 
 export default function SideBar({ active, activeChange }) {
-  const { theme, toggleTheme } = useTheme();
   const [auth] = useSession();
 
   return (

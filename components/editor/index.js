@@ -4,53 +4,55 @@ import { useSession } from "next-auth/client";
 import { useGlobal } from "hooks/use-global";
 import { useFormik } from "formik";
 import {
-  FormControl,
-  FormLabel,
-  Input,
-  Textarea,
-  Text,
-  Button,
-  Select,
-} from "@chakra-ui/react";
+  FormControl, FormLabel, Input, Textarea,
+  Text, Button, Select } from "@chakra-ui/react";
+import { createUpdate } from "components/dashboard/actions/requests";
+import { DeleteDialog } from "components/alert-dialog";
+import { useToasts } from "react-toast-notifications";
+import { useRouter } from "next/router";
+import validate from "./validate";
 
-const validate = (values) => {
-  const errors = {};
-
-  if (!values.title) {
-    errors.title = "Нийтлэлийн гарчиг оруулна уу!";
-  }
-
-  if (!values.summary) {
-    errors.summary = "Хураангуй мэдээлэл оруулна уу!";
-  } else if (values.summary.length > 300) {
-    errors.summary = "Хураангуй хамгийн ихдээ 300 тэмдэгт";
-  }
-
-  return errors;
-};
-
-export default function MyEditor({ categories, data, handleSubmit }) {
+export default function MyEditor({ type, categories, data }) {
   const [session] = useSession();
   const [editorValue, setValue] = useState(data ? data.content : null);
-  const { loading } = useGlobal();
+  const [isDelete, setDelete] = useState(false);
+  const { loading, setLoading } = useGlobal();
   const editorRef = useRef();
+  const router = useRouter();
+
+  const { addToast } = useToasts();
 
   const formik = useFormik({
     initialValues: {
       title: data ? data.title : "",
       summary: data ? data.summary : "",
-      category: data ? data.category._id : categories?[0]._id : "",
+      category: data ? data.category._id : categories ? [0]._id : "",
       status: data ? data.status : "draft",
     },
     validate,
     onSubmit: async (values) => {
-      await handleSubmit(values, editorValue);
+      // await handleSubmit(values, editorValue);
+      await createUpdate(
+        values,
+        editorValue,
+        session,
+        isDelete ? "delete" : type,
+        setLoading,
+        addToast,
+        data,
+        router
+      );
     },
   });
 
   const handleEditorChange = (e) => {
     setValue(e.target.getContent());
   };
+
+  const handleDelete = () => {
+      setDelete(true);
+      formik.handleSubmit();
+  }
 
   return loading ? (
     <div>loading...</div>
@@ -139,32 +141,32 @@ export default function MyEditor({ categories, data, handleSubmit }) {
       {categories && (
         <FormControl>
           <FormLabel htmlFor="title">Ангилал</FormLabel>
-          <Select id="category" name="category" value={formik.values.category} onChange={formik.handleChange} isRequired>
+          <Select
+            id="category"
+            name="category"
+            value={formik.values.category}
+            onChange={formik.handleChange}
+            isRequired
+          >
             {categories.map((e, i) => (
-              <option
-                key={e.id}
-                value={e._id}
-              >
+              <option key={e.id} value={e._id}>
                 {e.name}
               </option>
             ))}
           </Select>
         </FormControl>
       )}
-      {session?.user?.is_admin && (
+      { session?.user?.is_admin && (
         <FormControl>
           <FormLabel htmlFor="title">Төлөв</FormLabel>
-          <Select id="status" name="status" value={formik.values.status}  onChange={formik.handleChange}>
-            <option
-              value="draft"
-            >
-              Draft
-            </option>
-            <option
-              value="approved"
-            >
-              Approve
-            </option>
+          <Select
+            id="status"
+            name="status"
+            value={formik.values.status}
+            onChange={formik.handleChange}
+          >
+            <option value="draft">Draft</option>
+            <option value="approved">Approve</option>
           </Select>
         </FormControl>
       )}
@@ -178,6 +180,9 @@ export default function MyEditor({ categories, data, handleSubmit }) {
       >
         Хадгалах
       </Button>
+      {type === "review" && (
+        <DeleteDialog onYes={handleDelete}/>
+      )}
       {/* {data && <pre>{JSON.stringify(data, null, 2)}</pre>} */}
     </form>
   );

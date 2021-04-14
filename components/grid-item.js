@@ -1,30 +1,40 @@
-import Card from "react-bootstrap/Card";
-import Badge from "react-bootstrap/Badge";
+import { Box, Text, Badge } from "@chakra-ui/react";
 
 import Link from "next/link";
 import moment from "moment";
 const GridItem = ({ article }) => {
   moment.locale("mn");
   return (
-    <div className={`fj-card`}>
-      <div className="card-body-wrapper">
-        <div className="d-flex flex-row">
-          <div>
-            <Link href={`/${article.slug}`}>
-              <a>
-                <Card.Title className="font-weight-bold mb-1">
-                  {article.title}
-                </Card.Title>
-              </a>
-            </Link>
-            <Card.Text>{article.summary}</Card.Text>
-            <Card.Text className="card-date">
-              {moment(article.createdAt).format("lll")} Нийтлэлч: {article.author?.name} <Badge variant="secondary" size="medium">{ article.category?.name }</Badge>
-            </Card.Text>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Box
+      mb={5}
+      bg="white"
+      boxShadow="md"
+      className="px-4 pt-4 pb-3"
+      rounded="md"
+    >
+      <Box>
+        <Link href={`/${article.slug}`}>
+          <a>
+            <Text fontWeight="bold" fontSize="20px" mb={1}>
+              {article.title}
+            </Text>
+          </a>
+        </Link>
+        <Text>{article.summary}</Text>
+        <Box
+          my={2}
+          display="flex"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Text mr={2}>
+            {moment(article.createdAt).format("lll")} Нийтлэлч:{" "}
+            {article.author?.name}
+          </Text>{" "}
+          <Badge>{article.category?.name}</Badge>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

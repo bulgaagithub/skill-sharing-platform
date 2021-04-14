@@ -1,13 +1,10 @@
-import { Media } from "react-bootstrap";
+import { Box, Text } from "@chakra-ui/react";
 const Intro = () => (
-  <Media className="admin-intro">
-    <Media.Body>
-      <h5 className="font-weight-bold mb-0">Skill sharing platform</h5>
-      <p className="welcome-text">
-        Бид програмчлалын чиглэлээр төрөл бүрийн сонирхолтой
-        мэдээллүүдийг энэхүү блогоор хүргэж байна.
-      </p>
-    </Media.Body>
-  </Media>
+  <Box className="mb-4" maxW="600px">
+    <Text fontSize="1.5rem">
+      Бид програмчлалын чиглэлээр төрөл бүрийн сонирхолтой мэдээллүүдийг энэхүү
+      блогоор хүргэж байна.
+    </Text>
+  </Box>
 );
 export default Intro;
