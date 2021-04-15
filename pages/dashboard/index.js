@@ -1,24 +1,20 @@
-import { useState } from "react";
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import { Grid, GridItem, Alert, Text, Box, Button } from "@chakra-ui/react";
 
 import Layout from "components/layout";
 import SideBar from "components/sidebar";
 import Article from "components/dashboard/article/index";
+import User from "components/dashboard/user/index";
 import Create from "components/dashboard/create";
+
+import { useGlobal } from "hooks/use-global";
 
 import { getAllCategories } from "lib/api";
 
-import { Grid, GridItem, Alert, Text, Box, Button } from "@chakra-ui/react";
-
 export default function Dashboard({ categories }) {
-  const [session, loading] = useSession();
-  const [active, setActive] = useState("articles");
-
-  const activeChange = (active) => {
-    setActive(active);
-  };
+  const [session] = useSession();
+  const { activeSide } = useGlobal();
 
   const router = useRouter();
 
@@ -35,14 +31,16 @@ export default function Dashboard({ categories }) {
           templateColumns={{ sm: "repeat(1, 1fr)", md: "repeat(5, 2fr)" }}
         >
           <GridItem colSpan={{ sm: 5, md: 1 }}>
-            <SideBar active={active} activeChange={activeChange} />
+            <SideBar />
           </GridItem>
 
           <GridItem colSpan={{ sm: 5, md: 4 }}>
-            {active === "articles" ? (
+            {activeSide === "articles" ? (
               <Article categories={categories} />
-            ) : (
+            ) : activeSide === "add" ? (
               <Create categories={categories} />
+            ) : (
+              <User />
             )}
           </GridItem>
         </Grid>
@@ -67,7 +65,7 @@ export default function Dashboard({ categories }) {
             </Box>
 
             <Box className="mt-2">
-              <Button onClick={()=> onLink('/login')}>
+              <Button onClick={() => onLink("/login")}>
                 <Text className="mx-1" fontSize="1.5rem" color="tomato">
                   Нэвтрэх
                 </Text>

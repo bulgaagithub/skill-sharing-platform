@@ -93,7 +93,6 @@ export const approveArticle = async (
   article,
   router
 ) => {
-
   const body = {
     status: "approved",
     articleId: article._id,
@@ -118,6 +117,59 @@ export const approveArticle = async (
     if (res.status === 200) {
       loadFn(false);
       addToast("Нийтлэгдлээ.", {
+        appearance: "success",
+      });
+      router.push("/dashboard");
+    } else {
+      loadFn(false);
+      const result = await res.json();
+      addToast(result.error.message + result.error.statusCode, {
+        appearance: "error",
+        autoDismiss: 6000,
+      });
+      return;
+    }
+  } catch (error) {
+    loadFn(false);
+    if (error.statusCode === 401) {
+      addToast(error.message, { appearance: "error" });
+      setTimeout(() => {
+        signOut();
+      }, 1000);
+    }
+  }
+};
+
+export const blockUser = async (
+  type,
+  session,
+  loadFn,
+  addToast,
+  user,
+  router
+) => {
+  const body = {
+    active: type === "Active" ? "active" : "inactive",
+  };
+
+  loadFn(true);
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    if (res.status === 200) {
+      loadFn(false);
+      addToast(type + ' User', {
         appearance: "success",
       });
       router.push("/dashboard");

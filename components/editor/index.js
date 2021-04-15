@@ -69,7 +69,7 @@ export default function MyEditor({ type, categories, data }) {
   ) : (
     // <Form onSubmit={(e) => handleSubmit(e, editorValue)}>
     <>
-      {session?.user?.is_admin && (
+      {session?.user?.is_admin && type === "review" && (
         <Box
           display="flex"
           alignItems="flex-end"
