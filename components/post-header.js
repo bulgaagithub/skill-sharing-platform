@@ -1,17 +1,18 @@
 import moment from "moment";
 import {abbreviateNumber} from 'utils/abbreviateNum';
 import { RiEyeLine } from "@react-icons/all-files/ri/RiEyeLine";
+import { Box, Heading, Text } from "@chakra-ui/react";
 const PostHeader = ({ post }) => {
   moment.locale("mn");
   return (
-    <div className="blog-detail-header">
+    <Box>
         {/* <pre>{JSON.stringify(post, null, 2)}</pre> */}
-      <h1 className="font-weight-bold blog-detail-header-title mb-0">
+      <Heading>
         {post.title}
-      </h1>
-      <p className="lead mb-0">
-        {moment(post.createdAt).format("lll")} Нийтэлсэн: {post.author?.name} <RiEyeLine /> {abbreviateNumber(post.reader_access)}
-      </p>
+      </Heading>
+      <Box display="flex" alignItems="center" justifyContent="flex-start">
+        <Text mr={2}>{moment(post.createdAt).format("lll")} Нийтэлсэн: {post.author?.name}</Text> <RiEyeLine /> <Text ml={1}>{abbreviateNumber(post.reader_access)}</Text>
+      </Box>
       
       {/* <h2 className="blog-detail-header-subtitle mb-3">{post.summary}</h2> */}
       {/* <img
@@ -20,7 +21,7 @@ const PostHeader = ({ post }) => {
         alt={post.cover_image.alt}
       /> */}
       {/* <div className="code-filename">{post.cover_image.alt}</div> */}
-    </div>
+    </Box>
   );
 };
 

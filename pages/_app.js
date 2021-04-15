@@ -1,4 +1,3 @@
-import { ThemeProvider } from "context/theme-context";
 import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
 import { Provider } from "next-auth/client";
 import { GlobalProvider } from "context/global-context";
@@ -39,39 +38,37 @@ Router.onRouteChangeError = (url) => {
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ThemeProvider>
-      <ChakraProvider theme={theme} resetCSS>
-        <ColorModeProvider
-          options={{
-            useSystemColorMode: true,
-          }}
-        >
-          <SWRConfig
-            value={{
-              refreshInterval: 60000,
-              fetcher,
+    <ChakraProvider theme={theme} resetCSS>
+      <ColorModeProvider
+        options={{
+          useSystemColorMode: false,
+        }}
+      >
+        <SWRConfig
+          value={{
+            refreshInterval: 60000,
+            fetcher,
             //   onError: (error, key) => {
             //     if (error.status !== 403 && error.status !== 404) {
             //       // addToast(error.message, { appearance: "error" });
             //     }
             //   },
-            }}
+          }}
+        >
+          <ToastProvider
+            autoDismissTimeout={2000}
+            placement="top-center"
+            autoDismiss
           >
-            <ToastProvider
-              autoDismissTimeout={2000}
-              placement="top-center"
-              autoDismiss
-            >
-              <Provider session={pageProps.session}>
-                <GlobalProvider>
-                  <Component {...pageProps} />
-                </GlobalProvider>
-              </Provider>
-            </ToastProvider>
-          </SWRConfig>
-        </ColorModeProvider>
-      </ChakraProvider>
-    </ThemeProvider>
+            <Provider session={pageProps.session}>
+              <GlobalProvider>
+                <Component {...pageProps} />
+              </GlobalProvider>
+            </Provider>
+          </ToastProvider>
+        </SWRConfig>
+      </ColorModeProvider>
+    </ChakraProvider>
   );
 }
 

@@ -2,20 +2,26 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { RiWechat2Fill } from "@react-icons/all-files/ri/RiWechat2Fill";
 import { RiThumbUpFill } from "@react-icons/all-files/ri/RiThumbUpFill";
-import Button from "react-bootstrap/Button";
 import { useSession } from "next-auth/client";
 import { useGlobal } from "hooks/use-global";
 import { Spinner } from "react-bootstrap";
+import { Box, Button } from "@chakra-ui/react";
+
+import { useToasts } from "react-toast-notifications";
 
 export default function Comment({ article }) {
   const [session] = useSession();
   const { temparticle, loading, setLoading, setArticle } = useGlobal();
   const [isComment, setIsComment] = useState(false);
+  const { addToast } = useToasts();
   moment.locale("mn");
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (e.currentTarget.comment.value === "") {
-      alert("Та коммент оруулна уу!");
+      addToast("Та коммент оруулна уу!", {
+        appearance: "info",
+        autoDismiss: 5000,
+      });
     } else {
       const temp = { ...temparticle };
       try {
@@ -38,11 +44,17 @@ export default function Comment({ article }) {
         setArticle(temp);
         setLoading(false);
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/comments`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json",  'Authorization': `Bearer ${session?.accessToken}` },
-          body: JSON.stringify(newComment),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/comments`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+            body: JSON.stringify(newComment),
+          }
+        );
       } catch (error) {
         setLoading(false);
       }
@@ -58,12 +70,10 @@ export default function Comment({ article }) {
     <div className="wrapper">
       <div className="like-comment">
         <div className="like">
-          <RiWechat2Fill />{" "}
-          <span> {article?.comments?.length}</span>
+          <RiWechat2Fill /> <span> {article?.comments?.length}</span>
         </div>
         <div className="like">
-          <RiThumbUpFill />{" "}
-          <span> {article?.likes}</span>
+          <RiThumbUpFill /> <span> {article?.likes}</span>
         </div>
       </div>
       <div className="comment-title">
@@ -77,14 +87,12 @@ export default function Comment({ article }) {
             name="comment"
             disabled={isComment ? true : false}
           ></textarea>
-          <Button type="submit" disabled={isComment ? true : false}>
-            {loading && (
-              <Spinner
-                animation="border"
-                size="sm"
-                style={{ marginRight: "10px" }}
-              />
-            )}
+          <Button
+            isLoading={loading}
+            type="submit"
+            disabled={isComment ? true : false}
+            colorScheme="blue"
+          >
             Илгээх
           </Button>
         </form>
@@ -93,7 +101,11 @@ export default function Comment({ article }) {
         )} */}
         {article?.comments &&
           article.comments.map((comment, i) => (
-            <div key={`${comment.createdAt}#${i}`} className="comment-list">
+            <Box
+              mt={3}
+              key={`${comment.createdAt}#${i}`}
+              className="comment-list"
+            >
               <span className="name">
                 {comment.name ? comment.name : "Зочин"}{" "}
               </span>
@@ -101,7 +113,7 @@ export default function Comment({ article }) {
                 {moment(comment.createdAt, "YYYYMMDD").fromNow()}
               </span>
               <p>{comment.comment}</p>
-            </div>
+            </Box>
           ))}
       </div>
       <style jsx>{`

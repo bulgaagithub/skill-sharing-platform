@@ -1,12 +1,8 @@
 import { Navbar, Nav } from "react-bootstrap";
-import { useTheme } from "hooks/use-theme";
 import Link from "next/link";
-import Toggle from "react-toggle";
 const MyNavbar = () => {
-  const { theme, toggleTheme } = useTheme();
   return (
     <Navbar
-      variant={theme.type}
       className="fj-navbar fj-nav-base"
       bg="transparent"
       expand="lg"

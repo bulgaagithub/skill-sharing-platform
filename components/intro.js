@@ -8,6 +8,7 @@ const Intro = () => (
     textAlign="center"
     height="200px"
     bg="green.600"
+    mb={5}
   >
     <Box maxWidth="sm">
       <Text fontSize="1.5rem" fontWeight="bold" color="#fff">
