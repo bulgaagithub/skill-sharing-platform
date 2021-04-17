@@ -11,55 +11,30 @@ import {
   SkeletonText
 } from "@chakra-ui/react";
 import { useToasts } from "react-toast-notifications";
-import useSWR from "swr";
 import { useSession, signOut } from "next-auth/client";
 import { useRouter } from "next/router";
 
 import { useGlobal } from "hooks/use-global";
 import { blockUser } from "components/dashboard/actions/requests";
 import Page from "components/dashboard/pagination";
+import { useFetch } from "hooks/use-fetch";
 
-const PAGE_LIMIT = 3;
+const PAGE_LIMIT = 2;
 export default function index() {
   const [pageIndex, setPageIndex] = useState(0);
   const [session] = useSession();
   const { addToast } = useToasts();
 
-  const { loading, setLoading } = useGlobal();
+  const { setLoading } = useGlobal();
   const router = useRouter();
 
-  const fetcher = async (url) => {
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    });
-    if (!res.ok) {
-      const result = await res.json();
-      if (result.error.name === "TokenExpiredError") {
-        addToast("Нэвтрэх эрх дууссан байна.", { appearance: "error" });
-        setTimeout(() => {
-          signOut();
-        }, 1000);
-      } else {
-        addToast(result.error.message + result.error.statusCode, {
-          appearance: "error",
-          autoDismiss: 6000,
-        });
-      }
-      return false;
-    }
-    return res.json();
-  };
+//   const { data, isValidating } = useSWR(
+//     `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${pageIndex + 1}&limit=${PAGE_LIMIT}`,
+//     fetcher
+//   );
 
-  const { data, isValidating } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?page=${pageIndex}&limit=${PAGE_LIMIT}`,
-    fetcher
-  );
 
-  console.log(data)
+  const { data, isValidating } = useFetch(`/api/v1/users?page=${pageIndex + 1}&limit=${PAGE_LIMIT}`, session, addToast, signOut);
 
   return !data?.data?.length === 0 ? (
     <div>Одоогоор нийтлэл ороогүй байна.</div>
@@ -69,7 +44,7 @@ export default function index() {
     </Box>
   ) : (
     <Box>
-      <Table>
+      <Table mb={4}>
         <Thead>
           <Tr>
             <Th>Нэр</Th>

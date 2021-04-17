@@ -6,7 +6,6 @@ import Page from "components/dashboard/pagination";
 import { useFetch } from "hooks/use-fetch";
 import { useToasts } from "react-toast-notifications";
 import { useSession, signOut } from "next-auth/client";
-import useSWR from "swr";
 
 const PAGE_LIMIT = 2;
 export default function All({ categories, reviewArticle, handleReview }) {
@@ -14,12 +13,11 @@ export default function All({ categories, reviewArticle, handleReview }) {
   const [session] = useSession();
   const { addToast } = useToasts();
 
-  const { data, isValidating } = useSWR(
-    `/api/articles?page=${pageIndex}&limit=${PAGE_LIMIT}`
-  );
+//   const { data, isValidating } = useSWR(
+//     `/api/articles?page=${pageIndex}&limit=${PAGE_LIMIT}`
+//   );
 
-  // const { data, isValidating, error } = useFetch(`/api/v1/articles`, pageIndex, PAGE_LIMIT, 
-  // session, addToast, signOut);
+  const { data, isValidating, error } = useFetch(`/api/v1/articles?page=${pageIndex + 1}&limit=${PAGE_LIMIT}`, session, addToast, signOut);
 
   return isValidating ? (
     <Box padding="6" boxShadow="lg" bg="white" mt={2}>

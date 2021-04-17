@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Box, SkeletonText } from "@chakra-ui/react";
 import { useToasts } from "react-toast-notifications";
 import { useSession, signOut } from "next-auth/client";
-import useSWR from "swr";
 
 import DataTable from "components/dashboard/data-table";
 import Review from "components/dashboard/review";
 import Page from "components/dashboard/pagination";
+import { useFetch } from "hooks/use-fetch";
 
 const PAGE_LIMIT = 10;
 export default function Current({ categories, reviewArticle, handleReview }) {
@@ -14,31 +14,12 @@ export default function Current({ categories, reviewArticle, handleReview }) {
   const [pageIndex, setPageIndex] = useState(0);
   const { addToast } = useToasts();
 
-  const fetcher = async (url) => {
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    });
-    if (!res.ok) {
-      const result = await res.json();
-      if (result.error.name === "TokenExpiredError") {
-        addToast("Нэвтрэх эрх дууссан байна.", { appearance: "error" });
-        setTimeout(() => {
-          signOut();
-        }, 1000);
-      }
-      return false;
-    }
-    return res.json();
-  };
+//   const { data, isValidating } = useSWR(
+//     `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/articles?page=${pageIndex}&limit=${PAGE_LIMIT}`,
+//     fetcher
+//   );
 
-  const { data, isValidating } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/articles?page=${pageIndex}&limit=${PAGE_LIMIT}`,
-    fetcher
-  );
+  const { data, isValidating, error } = useFetch(`/api/v1/users/articles?page=${pageIndex + 1}&limit=${PAGE_LIMIT}`, session, addToast, signOut);
 
   return isValidating ? (
     <Box padding="6" boxShadow="lg" bg="white" mt={2}>

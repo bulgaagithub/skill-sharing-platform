@@ -26,9 +26,9 @@ const fetcher = async (url, session, addToast, signOut) => {
   return res.json();
 };
 
-export const useFetch = (pageIndex, PAGE_LIMIT, url, session, addToast) => {
+export const useFetch = (url, session, addToast, signOut) => {
   const { data, isValidating, error } = useSWR(
-    [`${process.env.NEXT_PUBLIC_API_URL}${url}?page=${pageIndex}&limit=${PAGE_LIMIT}}`, session, addToast],
+    [`${process.env.NEXT_PUBLIC_API_URL}${url}`, session, addToast, signOut],
     fetcher,
     {
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
