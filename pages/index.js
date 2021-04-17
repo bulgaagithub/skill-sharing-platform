@@ -11,7 +11,7 @@ const PAGE_LIMIT = 3;
 export default function Home({ articles }) {
   const { data, isValidating, size, setSize } = useSWRInfinite(
     (index) =>
-      `/api/articles?status=status=approved&page=${index}&limit=${PAGE_LIMIT}`,
+      `/api/articles?from=idnex&status=status=approved&page=${index}&limit=${PAGE_LIMIT}`,
     {
       initialData: [articles],
     }
@@ -31,7 +31,7 @@ export default function Home({ articles }) {
           data.map(
             (page) =>
               page &&
-              page.map((article, i) => (
+              page?.map((article, i) => (
                 <Box md={12} key={article.title}>
                   <GridItem article={article} />
                 </Box>
@@ -67,10 +67,10 @@ export default function Home({ articles }) {
 }
 
 export const getStaticProps = async () => {
-  const articles = await getAllArticles(0, PAGE_LIMIT, "status=approved");
+  const data = await getAllArticles('index', 0, PAGE_LIMIT, "status=approved");
   return {
     props: {
-      articles: articles ? articles : [],
+      articles: data ? data : [],
     },
     revalidate: 10,
   };

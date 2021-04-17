@@ -9,7 +9,7 @@ const MyNavbar = () => {
     >
       <Navbar.Brand className="fj-navbar-brand">
         <Link href="/">
-          <a>SKILL SHARING</a>
+          <a>SKILL SHARING PLATFORM</a>
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />

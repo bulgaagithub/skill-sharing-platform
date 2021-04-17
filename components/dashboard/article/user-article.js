@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Pagination from "react-bootstrap/Pagination";
 import { Box, SkeletonText } from "@chakra-ui/react";
 import { useToasts } from "react-toast-notifications";
 import { useSession, signOut } from "next-auth/client";
@@ -7,11 +6,12 @@ import useSWR from "swr";
 
 import DataTable from "components/dashboard/data-table";
 import Review from "components/dashboard/review";
+import Page from "components/dashboard/pagination";
 
 const PAGE_LIMIT = 10;
 export default function Current({ categories, reviewArticle, handleReview }) {
   const [session] = useSession();
-  const [pageIndex, setPageIndex] = useState(1);
+  const [pageIndex, setPageIndex] = useState(0);
   const { addToast } = useToasts();
 
   const fetcher = async (url) => {
@@ -40,23 +40,6 @@ export default function Current({ categories, reviewArticle, handleReview }) {
     fetcher
   );
 
-  let pages = [];
-  let active = 1;
-
-  if (data && data.data?.length !== 0) {
-    for (let i = 0; i <= data.pagination.pageCount; i++) {
-      pages.push(
-        <Pagination.Item
-          key={i}
-          active={i === active}
-          onClick={() => setPageIndex(i)}
-        >
-          {i}
-        </Pagination.Item>
-      );
-    }
-  }
-
   return isValidating ? (
     <Box padding="6" boxShadow="lg" bg="white" mt={2}>
       <SkeletonText mt="4" noOfLines={4} spacing="4" />
@@ -70,6 +53,9 @@ export default function Current({ categories, reviewArticle, handleReview }) {
       handleReview={handleReview}
     />
   ) : (
-    <DataTable data={data ? data?.articles : []} handleReview={handleReview} />
+    <>
+      <DataTable data={data ? data.articles : []} handleReview={handleReview} />
+      <Page pageData={data ? data?.pagination : []} setPage={setPageIndex} pageIndex={pageIndex} />
+    </>
   );
 }

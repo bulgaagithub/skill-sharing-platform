@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-const fetcher = async (url, session, addToast) => {
+const fetcher = async (url, session, addToast, signOut) => {
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -26,9 +26,9 @@ const fetcher = async (url, session, addToast) => {
   return res.json();
 };
 
-export const useArticles = (url, session, addToast) => {
+export const useFetch = (pageIndex, PAGE_LIMIT, url, session, addToast) => {
   const { data, isValidating, error } = useSWR(
-    [`${process.env.NEXT_PUBLIC_API_URL}${url}}`, session, addToast],
+    [`${process.env.NEXT_PUBLIC_API_URL}${url}?page=${pageIndex}&limit=${PAGE_LIMIT}}`, session, addToast],
     fetcher,
     {
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
@@ -43,8 +43,7 @@ export const useArticles = (url, session, addToast) => {
 
         // Retry after 5 seconds.
         setTimeout(() => revalidate({ retryCount: retryCount + 1 }), 5000);
-      },
-      refreshInterval: 1000,
+      }
     }
   );
 

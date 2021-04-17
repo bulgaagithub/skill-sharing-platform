@@ -12,7 +12,6 @@ export default function DataTable({ data, type, handleReview }) {
       <Table striped bordered hover responsive size="sm">
         <thead>
           <tr>
-            <th>#</th>
             <th>Гарчиг</th>
             <th>Төлөв</th>
             <th>Огноо</th>
@@ -24,7 +23,7 @@ export default function DataTable({ data, type, handleReview }) {
         <tbody>
           {data?.map((article, i) => (
             <tr key={article._id}>
-              <td>{i + 1}</td>
+              {/* <td>{i + 1}</td> */}
               <td>{article.title}</td>
               <td>{article.status}</td>
               <td>{moment(article.createdAt).format("YYYY-MM-DD")}</td>
