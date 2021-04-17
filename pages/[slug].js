@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import Layout from "components/layout";
 import { getArticleBySlug, getAllArticles } from "lib/api";
@@ -7,10 +8,18 @@ import { useRouter } from "next/router";
 import ReactHtmlParser from "react-html-parser";
 import Comment from "components/comment";
 import Like from "components/like";
-
+import { useGlobal } from "hooks/use-global";
 const ArticleDetail = ({ article }) => {
   moment.locale("mn");
   const router = useRouter();
+
+  const { temparticle, loading, setLoading, setArticle } = useGlobal();
+
+  useEffect(() => {
+    if (article) {
+      setArticle(article);
+    }
+  }, [article]);
 
   if (router.isFallback) {
     return (
@@ -55,7 +64,7 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const articles = await getAllArticles(0, 4, 'status=approved');
+  const articles = await getAllArticles('slug', 0, 4, 'status=approved');
   return {
     paths: articles.map((article) => ({
       params: {

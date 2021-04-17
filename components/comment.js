@@ -41,19 +41,31 @@ export default function Comment({ article }) {
         temp.comments.push(newComment);
 
         setArticle(temp);
-        setLoading(false);
+
+        let headers = {};
+
+        if (session) {
+          headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session?.accessToken}`,
+          }
+        } else {
+          headers = {
+            "Content-Type": "application/json"
+          }
+        }
 
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/comments`,
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${session?.accessToken}`,
+              ...headers
             },
             body: JSON.stringify(newComment),
           }
         );
+        setLoading(false);
       } catch (error) {
         setLoading(false);
       }
@@ -72,7 +84,7 @@ export default function Comment({ article }) {
           <RiWechat2Fill /> <span> {article?.comments?.length}</span>
         </div>
         <div className="like">
-          <RiThumbUpFill /> <span> {article?.likes}</span>
+          <RiThumbUpFill /> <span> {temparticle?.likes}</span>
         </div>
       </div>
       <div className="comment-title">
@@ -109,7 +121,7 @@ export default function Comment({ article }) {
                 {comment.name ? comment.name : "Зочин"}{" "}
               </span>
               <span className="date">
-                {moment(comment.createdAt, "YYYYMMDD").fromNow()}
+                {moment(comment.createdAt).fromNow()}
               </span>
               <p>{comment.comment}</p>
             </Box>

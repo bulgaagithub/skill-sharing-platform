@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@chakra-ui/react";
 import { RiThumbUpLine } from "@react-icons/all-files/ri/RiThumbUpLine";
 import { useGlobal } from "hooks/use-global";
@@ -8,26 +8,24 @@ export default function Like({ article }) {
 
   const { temparticle, loading, setLoading, setArticle } = useGlobal();
 
-  useEffect(() => {
-    if (article) {
-      setArticle(article);
-    }
-  }, [article]);
-
   async function handleLike() {
     try {
-      setIsLike(true);
+     const temp = { ...temparticle };
       setLoading(true);
-      const body = {
-        articleId: article?._id,
-        type: "like",
-      };
+      // const body = {
+      //   articleId: article?._id,
+      //   type: "like",
+      // };
+
+      setIsLike(true);
+      temp.likes += 1;
+      setArticle(temp);
       await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/likes/like-dislike`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/${article?._id}/like-dislike`,
         {
-          method: "POST",
+          method: "GET",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
+          // body: JSON.stringify(body),
         }
       );
       setLoading(false);
@@ -39,7 +37,6 @@ export default function Like({ article }) {
   return (
     <div>
       {/* {temparticle != null && <pre>{JSON.stringify(temparticle, null, 2)}</pre>}  */}
-
       <Button
         isLoading={loading}
         loadingText="Loading"
