@@ -11,7 +11,7 @@ const PAGE_LIMIT = 3;
 export default function Home({ articles }) {
   const { data, isValidating, size, setSize } = useSWRInfinite(
     (index) =>
-      `/api/articles?from=idnex&status=status=approved&page=${index}&limit=${PAGE_LIMIT}`,
+      `/api/articles?from=index&status=status=approved&page=${index}&limit=${PAGE_LIMIT}`,
     {
       initialData: [articles],
     }
