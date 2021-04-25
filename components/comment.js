@@ -4,16 +4,17 @@ import { RiWechat2Fill } from "@react-icons/all-files/ri/RiWechat2Fill";
 import { RiThumbUpFill } from "@react-icons/all-files/ri/RiThumbUpFill";
 import { useSession } from "next-auth/client";
 import { useGlobal } from "hooks/use-global";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 
 import { useToasts } from "react-toast-notifications";
+import Reply from "./reply";
 
 export default function Comment({ article }) {
   const [session] = useSession();
   const { temparticle, loading, setLoading, setArticle } = useGlobal();
   const [isComment, setIsComment] = useState(false);
   const { addToast } = useToasts();
-  moment.locale("mn");
+  moment.locale("en");
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (e.currentTarget.comment.value === "") {
@@ -47,12 +48,12 @@ export default function Comment({ article }) {
         if (session) {
           headers = {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${session?.accessToken}`,
-          }
+            Authorization: `Bearer ${session?.accessToken}`,
+          };
         } else {
           headers = {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          };
         }
 
         const res = await fetch(
@@ -60,7 +61,7 @@ export default function Comment({ article }) {
           {
             method: "POST",
             headers: {
-              ...headers
+              ...headers,
             },
             body: JSON.stringify(newComment),
           }
@@ -120,10 +121,8 @@ export default function Comment({ article }) {
               <span className="name">
                 {comment.name ? comment.name : "Зочин"}{" "}
               </span>
-              <span className="date">
-                {moment(comment.createdAt).fromNow()}
-              </span>
               <p>{comment.comment}</p>
+              <Reply comment={comment} article={ article }/>
             </Box>
           ))}
       </div>
