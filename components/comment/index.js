@@ -4,10 +4,10 @@ import { RiWechat2Fill } from "@react-icons/all-files/ri/RiWechat2Fill";
 import { RiThumbUpFill } from "@react-icons/all-files/ri/RiThumbUpFill";
 import { useSession } from "next-auth/client";
 import { useGlobal } from "hooks/use-global";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text, Textarea, Divider} from "@chakra-ui/react";
 
 import { useToasts } from "react-toast-notifications";
-import Reply from "./reply";
+import Comments from "./comments";
 
 export default function Comment({ article }) {
   const [session] = useSession();
@@ -79,26 +79,29 @@ export default function Comment({ article }) {
     }
   }, [article]);
   return (
-    <div className="wrapper">
-      <div className="like-comment">
-        <div className="like">
-          <RiWechat2Fill /> <span> {article?.comments?.length}</span>
-        </div>
-        <div className="like">
-          <RiThumbUpFill /> <span> {temparticle?.likes}</span>
-        </div>
-      </div>
-      <div className="comment-title">
-        <h2>Comments</h2>
-      </div>
-      <div className="comment-body">
+    <Box mt={10}>
+      <Box d="flex" alignItems="center" justifyContent="flex-start" w="100%">
+        <Box d="flex" alignItems="center" justifyContent="flex-start">
+          <RiWechat2Fill /> <Text> {article?.comments?.length}</Text>
+        </Box>
+        <Box d="flex" alignItems="center" justifyContent="flex-start" ml={2}>
+          <RiThumbUpFill /> <Text ml={1}> {temparticle?.likes}</Text>
+        </Box>
+      </Box>
+      <Text fontSize="2xl">Comments</Text>
+      <Divider orientation="horizontal" size="md" color="blue" my={2}/>
+      <Box>
         <form onSubmit={handleSubmit}>
-          <textarea
+          <Textarea
+            bg="white"
             rows={3}
-            maxLength={250}
             name="comment"
             disabled={isComment ? true : false}
-          ></textarea>
+            boxShadow="md"
+            borderRadius="8px"
+            border="1px"
+            outline="green"
+          ></Textarea>
           <Button
             isLoading={loading}
             type="submit"
@@ -111,37 +114,8 @@ export default function Comment({ article }) {
         {/* {temparticle != null && (
           <pre>{JSON.stringify(temparticle, null, 2)}</pre>
         )} */}
-        {article?.comments &&
-          article.comments.map((comment, i) => (
-            <Box
-              mt={3}
-              key={`${comment.createdAt}#${i}`}
-              className="comment-list"
-            >
-              <span className="name">
-                {comment.name ? comment.name : "Зочин"}{" "}
-              </span>
-              <p>{comment.comment}</p>
-              <Reply comment={comment} article={ article }/>
-            </Box>
-          ))}
-      </div>
-      <style jsx>{`
-        textarea {
-          width: 100%;
-          background: #fff;
-          border: 1px solid transparent;
-          border-radius: 8px;
-          box-shadow: 1px 1px 10px #ccc;
-          outline: #ccc;
-          padding: 10px;
-          font-size: 1rem;
-        }
-        h2 {
-          margin-top: 10px;
-          margin-bottom: 0px;
-        }
-      `}</style>
-    </div>
+        <Comments article={article} />
+      </Box>
+    </Box>
   );
 }

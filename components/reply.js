@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useSession } from "next-auth/client";
 import { useGlobal } from "hooks/use-global";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text, Textarea } from "@chakra-ui/react";
 
 import { useToasts } from "react-toast-notifications";
+import TextArea from "./comment/text-area";
 
 export default function Reply({ comment, article }) {
   const [session] = useSession();
@@ -79,15 +80,17 @@ export default function Reply({ comment, article }) {
 
   return (
     <Box>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="flex-start"
-      >
-        <span className="reply" fontSize="12px" onClick={() => setOpen(!open)}>
+      <Box display="flex" alignItems="center" justifyContent="flex-start">
+        <Text
+          cursor="pointer"
+          fontSize="14px"
+          fontWeight="bold"
+          color="gray.500"
+          onClick={() => setOpen(!open)}
+        >
           Reply
-        </span>
-        <Text className="date" ml="2">
+        </Text>
+        <Text ml="2" color="gray.500">
           {moment(comment.createdAt).fromNow()}
         </Text>
       </Box>
@@ -97,104 +100,59 @@ export default function Reply({ comment, article }) {
             (reply, i) =>
               reply.parent === comment._id && (
                 <Box key={`${reply.createdAt}#${i}`}>
-                  <span className="name">
-                    {reply.name ? reply.name : "Зочин"}{" "}
-                  </span>
-                  <p>{reply.comment}</p>
-                  <span
-                    className="reply"
-                    fontSize="12px"
-                    onClick={() => { setOpenSub(!openSub); setMention(reply.name ? reply.name : '') }}
+                  <Box
+                    my={3}
+                    maxW="sm"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                    padding={2}
+                    bg="blue.50"
+                    boxShadow="md"
                   >
-                    Reply
-                  </span>
+                    <Text fontSize="md" fontWeight="bold">{reply.name ? reply.name : "Зочин"} </Text>
+                    <Text fontSize={12}>{reply.comment}</Text>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="flex-start"
+                    >
+                      <Text
+                        cursor="pointer"
+                        fontWeight="bold"
+                        color="gray.500"
+                        fontSize="sm"
+                        onClick={() => {
+                          setOpenSub(!openSub);
+                          setMention(reply.name ? reply.name : "");
+                        }}
+                      >
+                        Reply
+                      </Text>
+
+                      <Text ml="2" fontSize="sm" color="gray.500">
+                        {moment(reply.createdAt).fromNow()}
+                      </Text>
+                    </Box>
+                  </Box>
                 </Box>
               )
           )}
         {openSub && (
-          <Box w={300}>
-            <div className="comment-body">
-              <form onSubmit={handleSubmit}>
-                <textarea
-                  rows={3}
-                  maxLength={250}
-                  name="comment"
-                >
-                 {mention} 
-                </textarea>
-                <Box
-                  display="flex"
-                  justifyContent="flex-end"
-                  alignItems="flex-end"
-                >
-                  <Button
-                    isLoading={loading}
-                    type="submit"
-                    bgGradient="linear(to-l, #7928CA, #FF0080)"
-                    color="#fff"
-                    size="sm"
-                    _hover={{ bgGradient: "linear(to-l, #FF0080, #7928CA)" }}
-                  >
-                    Илгээх
-                  </Button>
-                </Box>
-              </form>
-            </div>
-          </Box>
+          <TextArea
+            loading={loading}
+            handleSubmit={handleSubmit}
+            mention={mention}
+          />
         )}
       </Box>
       {open && (
-        <Box w={300}>
-          <div className="comment-body">
-            <form onSubmit={handleSubmit}>
-              <textarea
-                rows={3}
-                maxLength={250}
-                name="comment"
-                disabled={isReply ? true : false}
-              ></textarea>
-              <Box
-                display="flex"
-                justifyContent="flex-end"
-                alignItems="flex-end"
-              >
-                <Button
-                  isLoading={loading}
-                  type="submit"
-                  disabled={isReply ? true : false}
-                  bgGradient="linear(to-l, #7928CA, #FF0080)"
-                  color="#fff"
-                  size="sm"
-                  _hover={{ bgGradient: "linear(to-l, #FF0080, #7928CA)" }}
-                >
-                  Илгээх
-                </Button>
-              </Box>
-            </form>
-          </div>
-        </Box>
+        <TextArea
+          loading={loading}
+          handleSubmit={handleSubmit}
+          mention={mention}
+        />
       )}
-      <style jsx>{`
-        textarea {
-          width: 100%;
-          background: #fff;
-          border: 1px solid transparent;
-          border-radius: 8px;
-          box-shadow: 1px 1px 10px #ccc;
-          outline: #ccc;
-          padding: 10px;
-          font-size: 1rem;
-        }
-        h2 {
-          margin-top: 10px;
-          margin-bottom: 0px;
-        }
-        .reply {
-          cursor: pointer;
-          font-weight: bold;
-          color: #b2b2b2;
-        }
-      `}</style>
     </Box>
   );
 }

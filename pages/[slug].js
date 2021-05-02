@@ -6,7 +6,7 @@ import moment from "moment";
 import PostHeader from "components/post-header";
 import { useRouter } from "next/router";
 import ReactHtmlParser from "react-html-parser";
-import Comment from "components/comment";
+import Comment from "components/comment/index";
 import Like from "components/like";
 import { useGlobal } from "hooks/use-global";
 const ArticleDetail = ({ article }) => {
