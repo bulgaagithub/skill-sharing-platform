@@ -11,6 +11,7 @@ import Create from "components/dashboard/create";
 import { useGlobal } from "hooks/use-global";
 
 import { getAllCategories } from "lib/api";
+import ContractModal from "components/contract";
 
 export default function Dashboard({ categories }) {
   const [session] = useSession();
@@ -55,7 +56,7 @@ export default function Dashboard({ categories }) {
             variant="subtle"
             flexDirection="column"
             alignItems="center"
-            justifyContent="center"
+            justifyContent="flex-start"
             textAlign="center"
           >
             <Box>
@@ -63,6 +64,8 @@ export default function Dashboard({ categories }) {
                 Та нийтлэл оруулахын тулд сайтад бүртгүүлж нэвтрэх хэрэгтэй.
               </Text>
             </Box>
+
+            {/* <ContractModal /> */}
 
             <Box className="mt-2">
               <Button onClick={() => onLink("/login")}>
